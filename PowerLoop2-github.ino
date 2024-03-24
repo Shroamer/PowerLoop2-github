@@ -64,7 +64,7 @@ int inaAverageSamples = 2;                                        // store ina a
 int avgValue[8] = { 1, 4, 16, 64, 128, 256, 512, 1024 };          // storing these values for convenient use avgValue[inaAverageSamples]
 
 #define OPEN_LOOP 1000000.0f 
-#define NO_CURRENT 0.000001f // amperes. used to determine minimum current which is enough to define resistance
+#define NO_CURRENT 0.0001f // amperes. used to determine minimum current which is enough to define resistance
 
 volatile bool flagInaReady = 0;    // ina226 data is ready to be read - raised by ina226 via ISR
 volatile bool flagInaNewData = 0;  // raised after ina226 data registers are read to run data storing routine
