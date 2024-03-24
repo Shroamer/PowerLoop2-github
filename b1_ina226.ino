@@ -165,7 +165,7 @@ void inaImportValues() {                        // put values read into correspo
   inaVal.W = ina226.getBusPower() / 1000.0f;    // mW = W/1000 (?)
   inaVal.Vs = ina226.getShuntVoltage_mV();      // mV
   //ESP_LOGV("INA", "getting resistance...");     // debug in
-  if (inaVal.V != 0 && inaVal.A != 0) {  // open loop check
+  if (inaVal.V > NO_CURRENT && inaVal.A > NO_CURRENT) {  // open loop check. legacy:(inaVal.V != 0 && inaVal.A != 0)
     inaVal.R = inaVal.V / inaVal.A;      // calculate resistance R=V/I
   } else inaVal.R = OPEN_LOOP;               // setting "open loop" value
   ESP_LOGV("R=V/I", "%f = %f / %f", inaVal.R,inaVal.V,inaVal.A);     // debug out

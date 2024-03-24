@@ -6,7 +6,7 @@
 #define BOARD_ESP32_DEVKIT
 //#define BOARD_ESP32_D1_MINI
 
-//==================== SPLASJ SCREEN  ===================
+//==================== SPLASH SCREEN  ===================
 //#define BSP // uncomment for betterSerialTerminal output at 256000bps
 #define SPLASHSCREEN_TIMEOUT 500  // Splashscreen visible timeout. comment for no splashscreen
 #define REV_NO "2.0.3"
@@ -41,6 +41,10 @@
 #include <SPI.h>   // for ssd1306 spi display
 #include <Wire.h>  // for ina226 voltage/current i2c monitor
 
+//==================== MULTIPLE CORE ====================
+  // Declare a semaphore handle.
+  SemaphoreHandle_t sensorSemaphore;
+
 
 //==================== INA226 V/A meter ====================
 
@@ -59,7 +63,8 @@ int ctValue[8] = { 140, 204, 332, 588, 1100, 2116, 4156, 8244 };  // storing the
 int inaAverageSamples = 2;                                        // store ina averaging 0...7 (1/4/16/64/128/256/512/1024 x)
 int avgValue[8] = { 1, 4, 16, 64, 128, 256, 512, 1024 };          // storing these values for convenient use avgValue[inaAverageSamples]
 
-#define OPEN_LOOP 1000000.0f
+#define OPEN_LOOP 1000000.0f 
+#define NO_CURRENT 0.000001f // amperes. used to determine minimum current which is enough to define resistance
 
 volatile bool flagInaReady = 0;    // ina226 data is ready to be read - raised by ina226 via ISR
 volatile bool flagInaNewData = 0;  // raised after ina226 data registers are read to run data storing routine
