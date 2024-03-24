@@ -342,7 +342,7 @@ void read_ina() {  // clear ale flag, read ina226, store in memory, rise new dat
   ina226.readAndClearFlags();
   inaImportValues();
   flagInaNewData = 1;
-  inaAleAttachInterrupt();  // reattach interrupt after readings are done (not sure if that's a right place to reattch interrupt)
+  //inaAleAttachInterrupt();  // reattach interrupt after readings are done (not sure if that's a right place to reattch interrupt)
 }
 
 void inaImportValues() {                        // put values read into corresponding variables

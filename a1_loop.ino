@@ -1,6 +1,9 @@
 
 
 void loop() {  // put your main code here, to run repeatedly:
+  if (!flagInaReady)// rise flag if we miss last ALE ISR
+    if (!digitalRead(INA_ALE)) flagInaReady = 1;  // INA alert is pulling DOWN pin to alert
+
   if (flagInaReady) {
     ESP_LOGD("VAR", "INA READY");
     flagInaReady = 0;
