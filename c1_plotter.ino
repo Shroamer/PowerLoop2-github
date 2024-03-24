@@ -23,16 +23,18 @@ void plotA(float inLimitLevel) {
     //Serial.println(line);
     //ESP_LOGD("grid", "Line #%d at %f", i, line, 6);
     byte lineVal = screenmap.map(line);  // mapping inbound level line
-    for (int x = 0; x < 128; x += 10) {  // draw line line
+    for (int x = 0; x < 128; x += 12) {  // draw line line
       display.drawPixel(x, lineVal, SSD1306_INVERSE);
+      //display.fillRect(x, lineVal, 2, 1, SSD1306_INVERSE);
     }
   }
 
   if (inLimitLevel < screenArray.Max && inLimitLevel > screenArray.Min) {  // draw a limit line if limit is within screen area
     //screenmap.init(screenArray.Min, screenArray.Max, SCREEN_HEIGHT - 1, 0);  // init mapping scale
     byte limitVal = screenmap.map(inLimitLevel);  // mapping inbound level line
-    for (int x = 0; x < 128; x += 4) {            // draw inLimitLevel line
-      display.drawPixel(x, limitVal, SSD1306_INVERSE);
+    for (int x = 0; x < 128; x += 6) {            // draw inLimitLevel line
+      //display.drawPixel(x, limitVal, SSD1306_INVERSE);
+      display.fillRect(x, limitVal, 2, 1, SSD1306_INVERSE);
     }
   }
 
@@ -40,24 +42,24 @@ void plotA(float inLimitLevel) {
     display.setTextSize(1);
     {                                                             // print topMargin value
       dtostrf(screenArray.Max, numLenght, numPrec, floatstring);  // putting value into string
-      display.setCursor(128 - (6 * numLenght), 8 * 0);            // 0 line
+      display.setCursor(0, 8 * 0);                                // 0 line
       display.print(floatstring);
     }
     {                                                             // print bottomMargin value
       dtostrf(screenArray.Min, numLenght, numPrec, floatstring);  // putting value into string
-      display.setCursor(128 - (6 * numLenght), 8 * 7);            // 7 line (last)
+      display.setCursor(0, 8 * 7);                                // 7 line (last)
       display.print(floatstring);
     }
     {                                                          // print CURRENT value
       dtostrf(currentValue, numLenght, numPrec, floatstring);  // putting value into string
-      display.setCursor(128 - (6 * numLenght), 8 * 3);         // 3 line (above centerline)
+      display.setCursor(0, 8 * 3);                             // 3 line (above centerline)
       //if (currentActive) display.setTextColor(SSD1306_BLACK, SSD1306_WHITE);
       display.print(floatstring);
       //if (currentActive) display.setTextColor(SSD1306_WHITE);
     }
     {                                                          // print inLimitLevel value
       dtostrf(inLimitLevel, numLenght, numPrec, floatstring);  // putting value into string
-      display.setCursor(128 - (6 * numLenght), 8 * 4);         // 4 line (below centerline)
+      display.setCursor(0, 8 * 4);                             // 4 line (below centerline)
       display.print(floatstring);
     }
   }
