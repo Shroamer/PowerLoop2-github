@@ -60,7 +60,7 @@ INA226_WE ina226 = INA226_WE(&Wire, INA_ADDRESS);
 
 int inaConvTime = 4;                                              // store conversion time 0...7 (140/204/332/588/1100*/2116/4156/8244 µs)
 int ctValue[8] = { 140, 204, 332, 588, 1100, 2116, 4156, 8244 };  // storing these values for convenient use ctValue[inaConvTime]
-int inaAverageSamples = 4;                                        // store ina averaging 0...7 (1/4/16/64/128/256/512/1024 x)
+int inaAverageSamples = 2;                                        // store ina averaging 0...7 (1/4/16/64/128/256/512/1024 x)
 int avgValue[8] = { 1, 4, 16, 64, 128, 256, 512, 1024 };          // storing these values for convenient use avgValue[inaAverageSamples]
 
 #define OPEN_LOOP NAN //1000000.0f 
