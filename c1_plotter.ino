@@ -74,9 +74,13 @@ void plotA(float inLimitLevel) {
 float findGridSize(float inMin, float inMax) {
   float screenRange = inMax - inMin;
   float gridSize;
+  gridSize = pow(2, floor(log2(screenRange))) / 2;  // log2(screenRange) gives base-2 logarithm of the screenRange.
+                                                    // floor function rounds this down to the nearest whole number.
+                                                    // pow(2, ...) raises 2 to the power of this number.
+                                                    // This gives a grid size that doubles for each doubling of the screen range
   //ESP_LOGD("screenRange=inMax-inMin=", "%.8f = %.8f - %.8f", screenRange, inMax, inMin);
   //ESP_LOGD("screenRange=", "%f", screenRange);
-  if (screenRange < 0.00000005f) gridSize = 0.00000005f;
+  /*if (screenRange < 0.00000005f) gridSize = 0.00000005f;
   if (screenRange > 0.00000005f) gridSize = 0.0000001f;
   if (screenRange > 0.0000001f) gridSize = 0.000005f;
   if (screenRange > 0.0000005f) gridSize = 0.000001f;
@@ -98,7 +102,7 @@ float findGridSize(float inMin, float inMax) {
   if (screenRange > 50.0f) gridSize = 10.0f;
   if (screenRange > 100.0f) gridSize = 50.0f;
   if (screenRange > 500.0f) gridSize = 100.0f;
-  if (screenRange > 1000.0f) gridSize = 500.0f;
+  if (screenRange > 1000.0f) gridSize = 500.0f;*/
   return (gridSize);
 }
 
