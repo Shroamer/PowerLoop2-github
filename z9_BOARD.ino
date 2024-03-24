@@ -29,15 +29,15 @@ https://docs.espressif.com/projects/esp-idf/en/latest/esp32/_images/esp32-devkit
 /* ESP32 D1 mini
 https://nettigo.eu/system/images/3869/original.png?1619638105
 
-       | ------- |[GND]|[RST]| ------- |                                 |     TXD |   1 |[GND]| ------- |
-       | ------- | N/C | 36  | SVP     |                                 |     RXD |   3 | 27  |         | 
-       |     SVN |  39 | 26  |         | OLED_CS                 INA_SCL | I2C_SCL |  22 | 25  |         |
- EN_SW |         |  35 | 18  | V_SCK   | OLED_CLK                INA_SDA | I2C_SDA |  21 | 32  |         | 
-  EN_B |         |  33 | 19  | V_MISO  | OLED_RST                INA_ALE |         |  17 | 12  | TDI     |
-  EN_A |         |  34 | 23  | V_MOSI  | OLED_MOSI               OUT_PIN |         |  16 | 4   |         |
-       |     TMS |  14 | 5   | V_SS    | OLED_DC                         | ------- |[GND]| 0   |         |
-       | ------- | N/C |[3v3]| ------- |                                 | ------- |[VCC]| 2   | INT_LED | LED_PIN
-       |   FL_D2 |   9 | 13  | TCK     |                                 |     TD0 |  15 | 8   | FL_D1   | 
-       |     CMD |  11 | 10  | FL_D3   |              _____              |   FL_D0 |  17 | 6   | FL_CLK  | 
+*       | ------- |[GND]|[RST]| ------- |                                 |     TXD |   1 |[GND]| ------- |
+*       | ------- | N/C | 36  | SVP     |                                 |     RXD |   3 | 27  |         | 
+*       |     SVN |  39 | 26  |         | OLED_CS                 INA_SCL | I2C_SCL |  22 | 25  |         |
+* EN_SW |         |  35 | 18  | V_SCK   | OLED_CLK                INA_SDA | I2C_SDA |  21 | 32  |         | 
+*  EN_B |         |  33 | 19  | V_MISO  | OLED_RST                INA_ALE |         |  17 | 12  | TDI     |
+*  EN_A |         |  34 | 23  | V_MOSI  | OLED_MOSI               OUT_PIN |         |  16 | 4   |         |
+*       |     TMS |  14 | 5   | V_SS    | OLED_DC                         | ------- |[GND]| 0   |         |
+*       | ------- | N/C |[3v3]| ------- |                                 | ------- |[VCC]| 2   | INT_LED | LED_PIN
+*       |   FL_D2 |   9 | 13  | TCK     |                                 |     TD0 |  15 | 8   | FL_D1   | 
+*       |     CMD |  11 | 10  | FL_D3   |              _____              |   FL_D0 |  17 | 6   | FL_CLK  | 
 *                                                      USB
 */

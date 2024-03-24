@@ -11,7 +11,7 @@
 #define SPLASHSCREEN_TIMEOUT 500  // Splashscreen visible timeout. comment for no splashscreen
 #define REV_NO "2.0.3"
 #define REV_DATE "2024.03.24"
-#define SPLASH_MESSAGE "includind d1 mini esp32"
+#define SPLASH_MESSAGE "including d1 mini esp32"
 
 //==================== ESP32 PIN DEFINITIONS ====================
 #define LED_PIN 2    // internal LED pin
@@ -54,9 +54,9 @@
 */
 INA226_WE ina226 = INA226_WE(&Wire, INA_ADDRESS);
 
-int inaConvTime = 5;                                              // store conversion time 0...7 (140/204/332/588/1100*/2116/4156/8244 µs)
+int inaConvTime = 4;                                              // store conversion time 0...7 (140/204/332/588/1100*/2116/4156/8244 µs)
 int ctValue[8] = { 140, 204, 332, 588, 1100, 2116, 4156, 8244 };  // storing these values for convenient use ctValue[inaConvTime]
-int inaAverageSamples = 2;                                        // store ina averaging 0...7 (1/4/16/64/128/256/512/1024 x)
+int inaAverageSamples = 3;                                        // store ina averaging 0...7 (1/4/16/64/128/256/512/1024 x)
 int avgValue[8] = { 1, 4, 16, 64, 128, 256, 512, 1024 };          // storing these values for convenient use avgValue[inaAverageSamples]
 
 #define OPEN_LOOP 1000000.0f

@@ -1,45 +1,3 @@
-void logArrayGetMargins(float logArrayInput[], float bottomVal, float topVal) {  // find maximum/minimum values of array for scaling data (if value outside top/bottom - store "0")
-  ESP_LOGV("LOGARRAY", "margins");
-  int arrayIndex = 0;
-  screenArray.Max = NAN;
-  screenArray.Min = NAN;
-  for (arrayIndex = 0; arrayIndex < 128; arrayIndex++) {                                  // searching for a first value in range
-    if (logArrayInput[arrayIndex] >= bottomVal && logArrayInput[arrayIndex] <= topVal) {  // store in min/max if found, then break
-      screenArray.Max = logArrayInput[arrayIndex];
-      screenArray.Min = logArrayInput[arrayIndex];
-      break;  // breaking for() when first value found, holding arrayIndex of first good value
-    }
-  }
-  if (arrayIndex < 127) {                               // if array isn't done yet
-    for (arrayIndex; arrayIndex < 128; arrayIndex++) {  // continue to the end of array, stretching min/max
-      if (screenArray.Max < logArrayInput[arrayIndex]) screenArray.Max = logArrayInput[arrayIndex];
-      if (screenArray.Min > logArrayInput[arrayIndex]) screenArray.Min = logArrayInput[arrayIndex];
-    }
-  }
-  if (isnan(screenArray.Max) || isnan(screenArray.Min)) {  // set min/max to bottom/top values if none good samples found
-    ESP_LOGV("screenArray.Max=", "NAN");
-    screenArray.Max = topVal;
-    screenArray.Min = bottomVal;
-  }
-  if (screenArray.Max - screenArray.Min < MIN_WINDOW_SIZE) screenArray.Max = screenArray.Min + MIN_WINDOW_SIZE;  // setting minimum log window height
-}
-
-void screenArrayProcess(float logArrayInput[], float inMin, float inMax) {
-  //logArrayMargins(logArrayInput); // find maximum/minimum values of array for scaling data
-  screenmap.init(inMin, inMax, SCREEN_HEIGHT - 1, 0);  //init mapping scale to min/max window size
-  int ii = 127;
-  if (logArray.index < 127) {
-    for (int i = logArray.index + 1; i < 128; i++) {  // starting from the oldest value (index+1)
-      screenArray.Val[ii] = screenmap.map(logArrayInput[i]);
-      ii--;
-    }
-  }
-  for (int i = 0; i < logArray.index + 1; i++) {  // continue from the start of array
-    screenArray.Val[ii] = screenmap.map(logArrayInput[i]);
-    ii--;
-  }
-}
-
 void plotA(float inLimitLevel) {
   //display.clearDisplay();
   char floatstring[12];  // to line up values by right side
@@ -105,7 +63,7 @@ void plotA(float inLimitLevel) {
   }
 
   for (int i = 127; i >= 0; i--) {  // plotting screenArray along the screen
-    display.fillRect(i, screenArray.Val[i], 1, SCREEN_HEIGHT, SSD1306_INVERSE);
+    display.fillRect(127 - i, screenArray.Val[i], 1, SCREEN_HEIGHT, SSD1306_INVERSE);
   }
   //ESP_LOGD("PLOT", "OK");
   //display.display();
