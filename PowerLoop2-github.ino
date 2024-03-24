@@ -21,7 +21,7 @@
 #ifdef BOARD_ESP32_DEVKIT // =========[ ESP32 DEVKIT ]=========
 #define OUT_PIN 27     // pin connected to power mosfet module that switches main load
 #define INA_ALE 32     // connected to INA226 ALE pin, which alerts about new readings available
-#define OLED_RESET 17  // ssd1306 7SPI reset pin
+#define OLED_RST 17  // ssd1306 7SPI reset pin
 #define OLED_DC 16     // ssd1306 7SPI data/command pin
 #define EN_A 34        // encoder A output
 #define EN_B 35        // encoder B output
@@ -30,7 +30,7 @@
 #ifdef BOARD_ESP32_D1_MINI// =========[ ESP32 D1 MINI ]=========
 #define OUT_PIN 16     // pin connected to power mosfet module that switches main load
 #define INA_ALE 17     // connected to INA226 ALE pin, which alerts about new readings available
-#define OLED_RESET 19  // ssd1306 7SPI reset pin
+#define OLED_RST 19  // ssd1306 7SPI reset pin
 #define OLED_DC 5      // ssd1306 7SPI data/command pin
 #define EN_A 34        // encoder A output
 #define EN_B 33        // encoder B output
@@ -82,7 +82,7 @@ inaDataStruct inaVal;  // here we'll keep all latest INA values
 #define SCREEN_WIDTH 128  // OLED display width, in pixels
 #define SCREEN_HEIGHT 64  // OLED display height, in pixels//
 
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &SPI, OLED_DC, OLED_RESET, OLED_CS);  //Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &SPI, OLED_DC, OLED_RST, OLED_CS);  //Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, OLED_MOSI, OLED_CLK, OLED_DC, OLED_RST, OLED_CS);
 
 
 //==================== LOGGER ====================

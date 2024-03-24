@@ -67,10 +67,10 @@ inaDataStruct inaVal;  // here we'll keep all latest INA values
 
 #define OLED_CLK 18
 //#define OLED_MOSI  23
-#define OLED_RESET 17
+#define OLED_RST 17
 #define OLED_DC 16
 #define OLED_CS 26
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &SPI, OLED_DC, OLED_RESET, OLED_CS);  //Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &SPI, OLED_DC, OLED_RST, OLED_CS);  //Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, OLED_MOSI, OLED_CLK, OLED_DC, OLED_RST, OLED_CS);
 
 
 //==================== LOGGER ====================
