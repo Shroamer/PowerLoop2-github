@@ -1,11 +1,11 @@
 void logArrayInit() {  // init logArray in setup() after initing ina226
   //read_ina();
   for (int i = 0; i < 128; i++) {  // setting all log values to something that will not pull scale window
-    logArray.V[i] = inaVal.V;      //inaVal.V
-    logArray.A[i] = inaVal.A;      //inaVal.A;
-    logArray.W[i] = inaVal.W;
-    logArray.Vs[i] = inaVal.Vs;
-    logArray.R[i] = 1.7f;  //inaVal.R;
+    logArray.V[i] = NAN;           //inaVal.V
+    logArray.A[i] = NAN;           //inaVal.A;
+    logArray.W[i] = NAN;           //inaVal.W;
+    logArray.Vs[i] = NAN;          //inaVal.Vs;
+    logArray.R[i] = NAN;           //1.7f;  //inaVal.R;
   }
   logArray.index = 0;
 }
@@ -60,13 +60,13 @@ void screenArrayProcess(float logArrayInput[], float inMin, float inMax) {
   if (logArray.index < 127) {
     for (int i = logArray.index + 1; i < 128; i++) {  // starting from the oldest value (index+1)
       if (!std::isnan(inaVal.R)) screenArray.Val[ii] = screenmap.map(logArrayInput[i]);
-      else screenArray.Val[ii] = SCREEN_HEIGHT - 1; // having to deal with NaN values
+      else screenArray.Val[ii] = SCREEN_HEIGHT - 1;  // having to deal with NaN values
       ii--;
     }
   }
   for (int i = 0; i < logArray.index + 1; i++) {  // continue from the start of array
     if (!std::isnan(inaVal.R)) screenArray.Val[ii] = screenmap.map(logArrayInput[i]);
-    else screenArray.Val[ii] = SCREEN_HEIGHT - 1; // having to deal with NaN values
+    else screenArray.Val[ii] = SCREEN_HEIGHT - 1;  // having to deal with NaN values
     ii--;
   }
 }
