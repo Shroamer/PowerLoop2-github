@@ -16,9 +16,9 @@ testing resistive capabilities on existing hardware
 #define SPLASH_MESSAGE "adding controls"
 
 //==================== ESP32 PIN DEFINITIONS ====================
-#define OUTPIN 27     // pin connected to power mosfet module that switches main load
-#define LEDPIN 2      // internal LED pin
-#define ALERT_PIN 32  // connected to INA226 ALE pin, which alerts about new readings available
+#define OUT_PIN 27     // pin connected to power mosfet module that switches main load
+#define LED_PIN 2      // internal LED pin
+#define INA_ALE 32  // connected to INA226 ALE pin, which alerts about new readings available
 
 //==================== ESP32 HARDWARE ====================
 #include <SPI.h>   // for ssd1306 spi display
@@ -167,7 +167,7 @@ void loop() {  // put your main code here, to run repeatedly:
   display.clearDisplay();
   plotA(trigR);
   display.display();
-  //ESP_LOGD("INA ALE PIN: ", "%d", digitalRead(ALERT_PIN));
+  //ESP_LOGD("INA ALE PIN: ", "%d", digitalRead(INA_ALE));
   newLogData = 0;
 }
 
@@ -317,7 +317,7 @@ u_int64_t getInaReadTime() {  // return estimated sampling time (uS) by multiply
 
 // https://microcontrollerslab.com/esp32-external-interrupts-tutorial-arduino-ide/
 void inaInrettuptInit() {  // setting pin mode and attaching ina ale interrupt
-  pinMode(ALERT_PIN, INPUT);
+  pinMode(INA_ALE, INPUT);
   ESP_LOGV("ALE-ISR", "detach");
   inaAleAttachInterrupt();
 }
@@ -326,14 +326,14 @@ void inaAleAttachInterrupt() {
   //ina226.readAndClearFlags(); // suppose there's sometimes ALE pin left HIGH, then interrupt stops working
   //flagInaReady = 0;
   ESP_LOGV("ALE-ISR", "attach");
-  attachInterrupt(ALERT_PIN, inaAlertISR, FALLING);
+  attachInterrupt(INA_ALE, inaAlertISR, FALLING);
   void enableConvReadyAlert();
-  //attachInterrupt(ALERT_PIN, inaAlertISR, LOW);
+  //attachInterrupt(INA_ALE, inaAlertISR, LOW);
 }
 
 void inaAleDetachInterrupt() {
   void disableConvReadyAlert();
-  detachInterrupt(ALERT_PIN);
+  detachInterrupt(INA_ALE);
 }
 
 //==================== INA226 OPERATIONS ====================
@@ -415,17 +415,17 @@ void printVersion() {
 }
 #line 1 "C:\\Users\\shroa\\Documents\\Arduino\\PowerLoop2-github\\b9_LED.ino"
 void ledInit() {
-  pinMode(LEDPIN, OUTPUT);
-  digitalWrite(LEDPIN, LOW);
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, LOW);
 }
 void ledOn() {
-  digitalWrite(LEDPIN, HIGH);
+  digitalWrite(LED_PIN, HIGH);
 }
 void ledOff() {
-  digitalWrite(LEDPIN, LOW);
+  digitalWrite(LED_PIN, LOW);
 }
 void ledToggle() {
-  digitalWrite(LEDPIN, !digitalRead(LEDPIN));
+  digitalWrite(LED_PIN, !digitalRead(LED_PIN));
 }
 #line 1 "C:\\Users\\shroa\\Documents\\Arduino\\PowerLoop2-github\\c0_logger.ino"
 void logArrayInit() {  // init logArray in setup() after initing ina226
@@ -613,23 +613,23 @@ float findGridLine(float windowMin, float windowMax, float gridSize, int skipSee
 
 #line 1 "C:\\Users\\shroa\\Documents\\Arduino\\PowerLoop2-github\\c2_limiter.ino"
 void switchInit() {
-  pinMode(OUTPIN, OUTPUT);
+  pinMode(OUT_PIN, OUTPUT);
 }
 
 void switchOn() {
-  digitalWrite(OUTPIN, HIGH);
+  digitalWrite(OUT_PIN, HIGH);
   ledOn();
   ESP_LOGV("SWITCH", "ON");
 }
 
 void switchOff() {
-  digitalWrite(OUTPIN, LOW);
+  digitalWrite(OUT_PIN, LOW);
   ledOff();
   ESP_LOGV("SWITCH", "OFF");
 }
 
 bool isSwitched() {
-  return (digitalRead(OUTPIN));
+  return (digitalRead(OUT_PIN));
 }
 #line 1 "C:\\Users\\shroa\\Documents\\Arduino\\PowerLoop2-github\\z9_BOARD.ino"
 /*
@@ -646,11 +646,11 @@ https://docs.espressif.com/projects/esp-idf/en/latest/esp32/_images/esp32-devkit
                    |         | 33  |8          31|  19 | V_MISO  |
                    |         | 25  |9          30|  18 | V_SCK   | OLED_CLK
            OLED_CS |         | 26  |10         29|   5 | V_SS    |
-            OUTPIN |         | 27  |11         28|  17 |         | OLED_RST
+            OUT_PIN |         | 27  |11         28|  17 |         | OLED_RST
                    | H_SCK   | 14  |12         27|  16 |         | OLED_DC
                    | H_MISO  | 12  |13         26|   4 |         | 
                    |         |[GND]|14         25|   0 |         | 
-                   | H_MOSI  | 13  |15         24|   2 | INT_LED | LEDPIN
+                   | H_MOSI  | 13  |15         24|   2 | INT_LED | LED_PIN
                    |         | 9   |16         23|  15 | H_SS    |
                    |         | 10  |17         22|   8 |         | 
                    |         | 11  |18         21|   7 |         | 

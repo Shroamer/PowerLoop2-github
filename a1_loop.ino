@@ -21,7 +21,7 @@ void loop() {  // put your main code here, to run repeatedly:
   display.clearDisplay();
   plotA(trigR);
   display.display();
-  //ESP_LOGD("INA ALE PIN: ", "%d", digitalRead(ALERT_PIN));
+  //ESP_LOGD("INA ALE PIN: ", "%d", digitalRead(INA_ALE));
   newLogData = 0;
 }
 

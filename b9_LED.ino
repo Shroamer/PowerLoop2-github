@@ -1,13 +1,13 @@
 void ledInit() {
-  pinMode(LEDPIN, OUTPUT);
-  digitalWrite(LEDPIN, LOW);
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, LOW);
 }
 void ledOn() {
-  digitalWrite(LEDPIN, HIGH);
+  digitalWrite(LED_PIN, HIGH);
 }
 void ledOff() {
-  digitalWrite(LEDPIN, LOW);
+  digitalWrite(LED_PIN, LOW);
 }
 void ledToggle() {
-  digitalWrite(LEDPIN, !digitalRead(LEDPIN));
+  digitalWrite(LED_PIN, !digitalRead(LED_PIN));
 }

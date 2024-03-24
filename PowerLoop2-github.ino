@@ -1,22 +1,41 @@
-/*
-r2.0.0
-testing resistive capabilities on existing hardware
-*/
 
 //==================== TEMPORARY DEFINES  ====================
 #define VALUES_SEPARATOR " "  // define separator to print serial data into plotter
 
+//==================== BOARD DEFINES  ===================
+#define BOARD_ESP32_DEVKIT
+//#define BOARD_ESP32_D1_MINI
 
+//==================== SPLASJ SCREEN  ===================
 //#define BSP // uncomment for betterSerialTerminal output at 256000bps
-#define SPLASHSCREEN_TIMEOUT 500 // Splashscreen visible timeout. comment for no splashscreen
-#define REV_NO "2.0.2"
-#define REV_DATE "2024.03.19"
-#define SPLASH_MESSAGE "adding controls"
+#define SPLASHSCREEN_TIMEOUT 500  // Splashscreen visible timeout. comment for no splashscreen
+#define REV_NO "2.0.3"
+#define REV_DATE "2024.03.24"
+#define SPLASH_MESSAGE "includind d1 mini esp32"
 
 //==================== ESP32 PIN DEFINITIONS ====================
-#define OUTPIN 27     // pin connected to power mosfet module that switches main load
-#define LEDPIN 2      // internal LED pin
-#define ALERT_PIN 32  // connected to INA226 ALE pin, which alerts about new readings available
+#define LED_PIN 2    // internal LED pin
+#define OLED_CLK 18  // 18 - V_SCK
+//#define OLED_MOSI  // 23 - V_MOSI
+#define OLED_CS 26
+#ifdef BOARD_ESP32_DEVKIT // =========[ ESP32 DEVKIT ]=========
+#define OUT_PIN 27     // pin connected to power mosfet module that switches main load
+#define INA_ALE 32     // connected to INA226 ALE pin, which alerts about new readings available
+#define OLED_RESET 17  // ssd1306 7SPI reset pin
+#define OLED_DC 16     // ssd1306 7SPI data/command pin
+#define EN_A 34        // encoder A output
+#define EN_B 35        // encoder B output
+#define EN_SW 39       // encoder switch (normally low)
+#endif
+#ifdef BOARD_ESP32_D1_MINI// =========[ ESP32 D1 MINI ]=========
+#define OUT_PIN 16     // pin connected to power mosfet module that switches main load
+#define INA_ALE 17     // connected to INA226 ALE pin, which alerts about new readings available
+#define OLED_RESET 19  // ssd1306 7SPI reset pin
+#define OLED_DC 5      // ssd1306 7SPI data/command pin
+#define EN_A 34        // encoder A output
+#define EN_B 33        // encoder B output
+#define EN_SW 35       // encoder switch (normally low)
+#endif
 
 //==================== ESP32 HARDWARE ====================
 #include <SPI.h>   // for ssd1306 spi display
@@ -63,11 +82,6 @@ inaDataStruct inaVal;  // here we'll keep all latest INA values
 #define SCREEN_WIDTH 128  // OLED display width, in pixels
 #define SCREEN_HEIGHT 64  // OLED display height, in pixels//
 
-#define OLED_CLK 18
-//#define OLED_MOSI  23
-#define OLED_RESET 17
-#define OLED_DC 16
-#define OLED_CS 26
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &SPI, OLED_DC, OLED_RESET, OLED_CS);  //Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 
 

@@ -1,19 +1,19 @@
 void switchInit() {
-  pinMode(OUTPIN, OUTPUT);
+  pinMode(OUT_PIN, OUTPUT);
 }
 
 void switchOn() {
-  digitalWrite(OUTPIN, HIGH);
+  digitalWrite(OUT_PIN, HIGH);
   ledOn();
   ESP_LOGV("SWITCH", "ON");
 }
 
 void switchOff() {
-  digitalWrite(OUTPIN, LOW);
+  digitalWrite(OUT_PIN, LOW);
   ledOff();
   ESP_LOGV("SWITCH", "OFF");
 }
 
 bool isSwitched() {
-  return (digitalRead(OUTPIN));
+  return (digitalRead(OUT_PIN));
 }

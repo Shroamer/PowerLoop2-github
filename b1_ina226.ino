@@ -131,7 +131,7 @@ u_int64_t getInaReadTime() {  // return estimated sampling time (uS) by multiply
 
 // https://microcontrollerslab.com/esp32-external-interrupts-tutorial-arduino-ide/
 void inaInrettuptInit() {  // setting pin mode and attaching ina ale interrupt
-  pinMode(ALERT_PIN, INPUT);
+  pinMode(INA_ALE, INPUT);
   ESP_LOGV("ALE-ISR", "detach");
   inaAleAttachInterrupt();
 }
@@ -140,14 +140,14 @@ void inaAleAttachInterrupt() {
   //ina226.readAndClearFlags(); // suppose there's sometimes ALE pin left HIGH, then interrupt stops working
   //flagInaReady = 0;
   ESP_LOGV("ALE-ISR", "attach");
-  attachInterrupt(ALERT_PIN, inaAlertISR, FALLING);
+  attachInterrupt(INA_ALE, inaAlertISR, FALLING);
   void enableConvReadyAlert();
-  //attachInterrupt(ALERT_PIN, inaAlertISR, LOW);
+  //attachInterrupt(INA_ALE, inaAlertISR, LOW);
 }
 
 void inaAleDetachInterrupt() {
   void disableConvReadyAlert();
-  detachInterrupt(ALERT_PIN);
+  detachInterrupt(INA_ALE);
 }
 
 //==================== INA226 OPERATIONS ====================
