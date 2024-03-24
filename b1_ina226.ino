@@ -164,11 +164,11 @@ void inaImportValues() {                        // put values read into correspo
   inaVal.A = ina226.getCurrent_mA() / 1000.0f;  // µA = mA/1000
   inaVal.W = ina226.getBusPower() / 1000.0f;    // mW = W/1000 (?)
   inaVal.Vs = ina226.getShuntVoltage_mV();      // mV
-  //ESP_LOGV("INA", "getting resistance...");     // debug in
-  if (inaVal.V > NO_CURRENT && inaVal.A > NO_CURRENT) {  // open loop check. legacy:(inaVal.V != 0 && inaVal.A != 0)
-    inaVal.R = inaVal.V / inaVal.A;      // calculate resistance R=V/I
-  } else inaVal.R = OPEN_LOOP;               // setting "open loop" value
-  ESP_LOGV("R=V/I", "%f = %f / %f", inaVal.R,inaVal.V,inaVal.A);     // debug out
+  ESP_LOGV("INA", "getting resistance...");     // debug in
+  if (inaVal.V != 0 && inaVal.A != 0) {                                          // open loop check. legacy:(inaVal.V > NO_CURRENT && inaVal.A > NO_CURRENT)
+    inaVal.R = inaVal.V / inaVal.A;                                              // calculate resistance R=V/I
+  } else inaVal.R = OPEN_LOOP;                                                   // setting "open loop" value
+  ESP_LOGV("R=V/I", "%f = %f / %f", inaVal.R, inaVal.V, inaVal.A);               // debug out
   if (ina226.overflow) Serial.println("Overflow! Choose higher current range");  // overflow alert
   ESP_LOGV("INA READ", "values: %fR %fA  %fV  %fW  %fVs", inaVal.R, inaVal.A, inaVal.V, inaVal.W, inaVal.Vs);
 }

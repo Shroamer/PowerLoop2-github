@@ -9,7 +9,6 @@ void IRAM_ATTR inaAlertISR() {  //  INA226 set ALERT flag, informing it has new 
   inaAleDetachInterrupt();  // detaching interrupt untill we read data? should we stop ina?
 }
 
-
 void setup() {  // put your setup code here, to run once:
 #ifndef SERIAL256000
   Serial.begin(115200);

@@ -11,8 +11,8 @@ void logArrayInit() {  // init logArray in setup() after initing ina226
 }
 
 void logArrayProcess() {  // takes inaVal content and put it into logArray
-  ESP_LOGV("LOGARRAY", "trigger: ", trigR - inaVal.W);
-  if (inaVal.R < trigR && inaVal.R > 0) {  // process actual values if resistance is low enough to start logging
+  ESP_LOGV("LOGARRAY", "trigger: %f", trigR - inaVal.R);
+  if (inaVal.R < trigR && !std::isnan(inaVal.R)) {  // process actual values if resistance is low enough to start logging
     ESP_LOGV("LOGARRAY", "triggered");
     if (logArray.index < 127) logArray.index++;  // cycle iterate logArray.index
     else logArray.index = 0;

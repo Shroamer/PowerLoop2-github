@@ -60,11 +60,10 @@ INA226_WE ina226 = INA226_WE(&Wire, INA_ADDRESS);
 
 int inaConvTime = 4;                                              // store conversion time 0...7 (140/204/332/588/1100*/2116/4156/8244 µs)
 int ctValue[8] = { 140, 204, 332, 588, 1100, 2116, 4156, 8244 };  // storing these values for convenient use ctValue[inaConvTime]
-int inaAverageSamples = 2;                                        // store ina averaging 0...7 (1/4/16/64/128/256/512/1024 x)
+int inaAverageSamples = 4;                                        // store ina averaging 0...7 (1/4/16/64/128/256/512/1024 x)
 int avgValue[8] = { 1, 4, 16, 64, 128, 256, 512, 1024 };          // storing these values for convenient use avgValue[inaAverageSamples]
 
-#define OPEN_LOOP 1000000.0f 
-#define NO_CURRENT 0.0001f // amperes. used to determine minimum current which is enough to define resistance
+#define OPEN_LOOP NAN //1000000.0f 
 
 volatile bool flagInaReady = 0;    // ina226 data is ready to be read - raised by ina226 via ISR
 volatile bool flagInaNewData = 0;  // raised after ina226 data registers are read to run data storing routine
@@ -92,6 +91,8 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &SPI, OLED_DC, OLED_RST, O
 
 //==================== LOGGER ====================
 
+bool newLogData = 0;  // flag if there's update in logger data
+
 struct inaLog {
   int index = 0;
   float V[128];
@@ -102,8 +103,8 @@ struct inaLog {
 } logArray;  // storing 128 last values for screen log + index (last position)
 //logArray[128];  // logged data logArray[logArray.index].V
 //int logArray.index = 0;
-bool newLogData = 0;  // flag if there's update in logger data
-float trigR = 2.0f;   // resistance to trigger logging
+
+float trigR = 1.76f;   // resistance to trigger logging
 #define MIN_WINDOW_SIZE 0.00001f * 64.0f
 
 //==================== PLOTTER ====================
