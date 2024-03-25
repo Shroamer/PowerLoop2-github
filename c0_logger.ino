@@ -59,13 +59,13 @@ void screenArrayProcess(float logArrayInput[], float inMin, float inMax) {
   int ii = 127;
   if (logArray.index < 127) {
     for (int i = logArray.index + 1; i < 128; i++) {  // starting from the oldest value (index+1)
-      if (!std::isnan(inaVal.R)) screenArray.Val[ii] = screenmap.map(logArrayInput[i]);
+      if (!std::isnan(logArrayInput[i])) screenArray.Val[ii] = screenmap.map(logArrayInput[i]);
       else screenArray.Val[ii] = SCREEN_HEIGHT - 1;  // having to deal with NaN values
       ii--;
     }
   }
   for (int i = 0; i < logArray.index + 1; i++) {  // continue from the start of array
-    if (!std::isnan(inaVal.R)) screenArray.Val[ii] = screenmap.map(logArrayInput[i]);
+    if (!std::isnan(logArrayInput[i])) screenArray.Val[ii] = screenmap.map(logArrayInput[i]);
     else screenArray.Val[ii] = SCREEN_HEIGHT - 1;  // having to deal with NaN values
     ii--;
   }

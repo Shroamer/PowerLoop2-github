@@ -10,6 +10,7 @@ void loop() {  // put your main code here, to run repeatedly:
     read_ina();
     ledOff();
   }
+  
   if (flagInaNewData) {
     ESP_LOGD("VAR", "NEW DATA");
     flagInaNewData = 0;
