@@ -1,18 +1,19 @@
-void plotA(float inLimitLevel) {
+void plotA(float inLimitLevel, float currentValue) {
   //display.clearDisplay();
   char floatstring[12];  // to line up values by right side
-  float currentValue;
+  //float currentValue;
   float numPrec;
   bool currentActive = 0;
   int numLenght = 0;
 
-  currentValue = inaVal.R;
+  //currentValue = inaVal.R;
   numLenght = VAL_R_DIGITS;
   numPrec = VAL_R_PREC;
 
   //ESP_LOGD("Min-Max=", "%.8f - %.8f", screenArray.Min, screenArray.Max);
   float gridSize = findGridSize(screenArray.Min, screenArray.Max);  // find grid size from range
   //ESP_LOGD("gridSize=", "%.8f", gridSize);
+
   screenmap.init(screenArray.Min, screenArray.Max, SCREEN_HEIGHT - 1, 0);  // init mapping scale;
   for (int i = 0; i < 11; ++i) {                                           // drawing grid lines
     float line = findGridLine(screenArray.Min, screenArray.Max, gridSize, i);
@@ -29,7 +30,8 @@ void plotA(float inLimitLevel) {
     }
   }
 
-  if (inLimitLevel < screenArray.Max && inLimitLevel > screenArray.Min) {  // draw a limit line if limit is within screen area
+  // draw a limit line if limit is within screen area
+  if (inLimitLevel < screenArray.Max && inLimitLevel > screenArray.Min) {
     //screenmap.init(screenArray.Min, screenArray.Max, SCREEN_HEIGHT - 1, 0);  // init mapping scale
     byte limitVal = screenmap.map(inLimitLevel);  // mapping inbound level line
     for (int x = 0; x < 128; x += 6) {            // draw inLimitLevel line
@@ -48,7 +50,9 @@ void plotA(float inLimitLevel) {
     {                                                             // print bottomMargin value
       dtostrf(screenArray.Min, numLenght, numPrec, floatstring);  // putting value into string
       display.setCursor(0, 8 * 7);                                // 7 line (last)
+      if (limitMode == 1) display.setTextColor(SSD1306_BLACK, SSD1306_WHITE);
       display.print(floatstring);
+      if (limitMode == 1) display.setTextColor(SSD1306_WHITE, SSD1306_BLACK);
     }
     {                                                          // print CURRENT value
       dtostrf(currentValue, numLenght, numPrec, floatstring);  // putting value into string
@@ -78,31 +82,8 @@ float findGridSize(float inMin, float inMax) {
                                                     // floor function rounds this down to the nearest whole number.
                                                     // pow(2, ...) raises 2 to the power of this number.
                                                     // This gives a grid size that doubles for each doubling of the screen range
-  //ESP_LOGD("screenRange=inMax-inMin=", "%.8f = %.8f - %.8f", screenRange, inMax, inMin);
-  //ESP_LOGD("screenRange=", "%f", screenRange);
-  /*if (screenRange < 0.00000005f) gridSize = 0.00000005f;
-  if (screenRange > 0.00000005f) gridSize = 0.0000001f;
-  if (screenRange > 0.0000001f) gridSize = 0.000005f;
-  if (screenRange > 0.0000005f) gridSize = 0.000001f;
-  if (screenRange > 0.000001f) gridSize = 0.000005f;
-  if (screenRange > 0.000005f) gridSize = 0.00001f;
-  if (screenRange > 0.00001f) gridSize = 0.00005f;
-  if (screenRange > 0.00005f) gridSize = 0.0001f;
-  if (screenRange > 0.0001f) gridSize = 0.0005f;
-  if (screenRange > 0.0005f) gridSize = 0.001f;
-  if (screenRange > 0.001f) gridSize = 0.005f;
-  if (screenRange > 0.005f) gridSize = 0.01f;
-  if (screenRange > 0.01f) gridSize = 0.05f;
-  if (screenRange > 0.05f) gridSize = 0.01f;
-  if (screenRange > 0.1f) gridSize = 0.05f;
-  if (screenRange > 0.5f) gridSize = 0.1f;
-  if (screenRange > 1.0f) gridSize = 0.5f;
-  if (screenRange > 5.0f) gridSize = 1.0f;
-  if (screenRange > 10.0f) gridSize = 5.0f;
-  if (screenRange > 50.0f) gridSize = 10.0f;
-  if (screenRange > 100.0f) gridSize = 50.0f;
-  if (screenRange > 500.0f) gridSize = 100.0f;
-  if (screenRange > 1000.0f) gridSize = 500.0f;*/
+                                                    //ESP_LOGD("screenRange=inMax-inMin=", "%.8f = %.8f - %.8f", screenRange, inMax, inMin);
+                                                    //ESP_LOGD("screenRange=", "%f", screenRange);
   return (gridSize);
 }
 

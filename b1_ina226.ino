@@ -141,13 +141,15 @@ void inaAleAttachInterrupt() {
   //flagInaReady = 0;
   //ESP_LOGV("ALE-ISR", "attach");
   attachInterrupt(INA_ALE, inaAlertISR, FALLING);
-  void enableConvReadyAlert();
+  aleISRattached = 1;
+  ina226.enableConvReadyAlert();
   //attachInterrupt(INA_ALE, inaAlertISR, LOW);
 }
 
 void inaAleDetachInterrupt() {
-  void disableConvReadyAlert();
+  ina226.disableConvReadyAlert();
   detachInterrupt(INA_ALE);
+  aleISRattached = 0;
 }
 
 //==================== INA226 OPERATIONS ====================
@@ -155,8 +157,17 @@ void inaAleDetachInterrupt() {
 void read_ina() {  // clear ale flag, read ina226, store in memory, rise new data flag
   ina226.readAndClearFlags();
   inaImportValues();
-  flagInaNewData = 1;
-  inaAleAttachInterrupt();  // reattach interrupt after readings are done (not sure if that's a right place to reattch interrupt)
+  if (!inaCheck) {
+    //ESP_LOGV("AleISR", "reattach");
+    inaAleAttachInterrupt();  // reattach interrupt if we're in continuous mode
+  }
+  if (flagInaSingleMeasureStart) flagInaSingleMeasureStart = 0;
+}
+void read_ina_single() {
+  delay(10);
+  ina226.startSingleMeasurement();
+  ina226.readAndClearFlags();
+  inaImportValues();
 }
 
 void inaImportValues() {  // put values read into corresponding variables
@@ -170,6 +181,7 @@ void inaImportValues() {  // put values read into corresponding variables
   if (inaVal.V != 0 && inaVal.A != 0) {  // open loop check. legacy:(inaVal.V > NO_CURRENT && inaVal.A > NO_CURRENT)
     inaVal.R = inaVal.V / inaVal.A;      // calculate resistance R=V/I
   } else inaVal.R = OPEN_LOOP;           // setting "open loop" value
+  flagInaNewData = 1;
   //xSemaphoreGive(inaSemaphore);          // Give the semaphore after reading INA
   //ESP_LOGD("semaphore", "give");
   //ESP_LOGV("R=V/I", "%f = %f / %f", inaVal.R, inaVal.V, inaVal.A);               // debug out
