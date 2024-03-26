@@ -18,23 +18,23 @@
 #define OLED_CLK 18  // 18 - V_SCK
 //#define OLED_MOSI  // 23 - V_MOSI
 #define OLED_CS 26
-#ifdef BOARD_ESP32_DEVKIT  // =========[ ESP32 DEVKIT ]=========
-#define OUT_PIN 27         // pin connected to power mosfet module that switches main load
-#define INA_ALE 32         // connected to INA226 ALE pin, which alerts about new readings available
-#define OLED_RST 17        // ssd1306 7SPI reset pin
-#define OLED_DC 16         // ssd1306 7SPI data/command pin
-#define EN_A 34            // encoder A output
-#define EN_B 35            // encoder B output
-#define EN_SW 39           // encoder switch (normally low)
+#ifdef BOARD_ESP32_DEVKIT // =========[ ESP32 DEVKIT ]=========
+#define OUT_PIN 27     // pin connected to power mosfet module that switches main load
+#define INA_ALE 32     // connected to INA226 ALE pin, which alerts about new readings available
+#define OLED_RST 17  // ssd1306 7SPI reset pin
+#define OLED_DC 16     // ssd1306 7SPI data/command pin
+#define EN_A 34        // encoder A output
+#define EN_B 35        // encoder B output
+#define EN_SW 39       // encoder switch (normally low)
 #endif
-#ifdef BOARD_ESP32_D1_MINI  // =========[ ESP32 D1 MINI ]=========
-#define OUT_PIN 16          // pin connected to power mosfet module that switches main load
-#define INA_ALE 17          // connected to INA226 ALE pin, which alerts about new readings available
-#define OLED_RST 19         // ssd1306 7SPI reset pin
-#define OLED_DC 5           // ssd1306 7SPI data/command pin
-#define EN_A 34             // encoder A output
-#define EN_B 33             // encoder B output
-#define EN_SW 35            // encoder switch (normally low)
+#ifdef BOARD_ESP32_D1_MINI// =========[ ESP32 D1 MINI ]=========
+#define OUT_PIN 16     // pin connected to power mosfet module that switches main load
+#define INA_ALE 17     // connected to INA226 ALE pin, which alerts about new readings available
+#define OLED_RST 19  // ssd1306 7SPI reset pin
+#define OLED_DC 5      // ssd1306 7SPI data/command pin
+#define EN_A 34        // encoder A output
+#define EN_B 33        // encoder B output
+#define EN_SW 35       // encoder switch (normally low)
 #endif
 
 //==================== ESP32 HARDWARE ====================
@@ -42,11 +42,12 @@
 #include <Wire.h>  // for ina226 voltage/current i2c monitor
 
 //==================== MULTIPLE CORE ====================
-// Declare a semaphore handle.
+  // Declare a semaphore handle.
 //SemaphoreHandle_t inaSemaphore;
 
 
 //==================== INA226 V/A meter ====================
+
 #include <INA226_WE.h>  // https://github.com/wollewald/INA226_WE/tree/master
 #define INA_ADDRESS 0x40
 /* There are several ways to create your INA226 object:
@@ -62,12 +63,11 @@ int ctValue[8] = { 140, 204, 332, 588, 1100, 2116, 4156, 8244 };  // storing the
 int inaAverageSamples = 1;                                        // store ina averaging 0...7 (1/4/16/64/128/256/512/1024 x)
 int avgValue[8] = { 1, 4, 16, 64, 128, 256, 512, 1024 };          // storing these values for convenient use avgValue[inaAverageSamples]
 
-#define OPEN_LOOP NAN  //1000000.0f value stored to resistance value if an open loop detected
+#define OPEN_LOOP NAN //1000000.0f 
 
 volatile bool flagInaReady = 0;    // ina226 data is ready to be read - raised by ina226 via ISR
 volatile bool flagInaNewData = 0;  // raised after ina226 data registers are read to run data storing routine
 volatile bool inaCheck = 0;        // true when we're turned switch on only to check values
-volatile bool aleISRattached = 0; // true when ISR is attached
 
 struct inaDataStruct {  //standard power line data sample
   float V;              // Bus voltage     (V)   ina226 register data
@@ -104,7 +104,7 @@ struct inaLog {
 //logArray[128];  // logged data logArray[logArray.index].V
 //int logArray.index = 0;
 
-float trigR = 1.76f;  // resistance to trigger logging
+float trigR = 1.76f;   // resistance to trigger logging
 #define MIN_WINDOW_SIZE 0.00001f * 64.0f
 
 //==================== PLOTTER ====================
@@ -134,13 +134,3 @@ struct lineCoords {
   byte X;
   byte Y;
 };
-
-//==================== LIMITER ====================
-volatile bool switchedOff = 0;                    // true when switch if off
-volatile bool flagInaSingleMeasureStart = 0;      // rised for a single measure turnOn
-volatile bool triggered = 0;                      // raised if limit broken and we're about to cool down
-float limitR = 1.67f;                              // resistance to limit to
-int limitMode = 1;                                // 0 - noLimit; 1 - limit R<
-hw_timer_t* idleTimer = NULL;                     // timer used to count cooling time
-#define BASE_TIMETOIDLE 250000                    // how long (mS) to idle after first limit rich
-volatile u_int32_t timeToIdle = BASE_TIMETOIDLE;  // ms to idle after limit rich
