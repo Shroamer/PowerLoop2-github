@@ -11,9 +11,9 @@ void logArrayInit() {  // init logArray in setup() after initing ina226
 }
 
 void logArrayProcess() {  // takes inaVal content and put it into logArray
-  ESP_LOGV("LOGARRAY", "trigger: %f", trigR - inaVal.R);
+  //ESP_LOGV("LOGARRAY", "trigger: %f", trigR - inaVal.R);
   if (inaVal.R < trigR && !std::isnan(inaVal.R)) {  // process actual values if resistance is low enough to start logging
-    ESP_LOGV("LOGARRAY", "triggered");
+    //ESP_LOGV("LOGARRAY", "triggered");
     if (logArray.index < 127) logArray.index++;  // cycle iterate logArray.index
     else logArray.index = 0;
     logArray.V[logArray.index] = inaVal.V;  //inaVal.V
@@ -28,7 +28,7 @@ void logArrayProcess() {  // takes inaVal content and put it into logArray
 }
 
 void logArrayGetMargins(float logArrayInput[], float bottomVal, float topVal) {  // find maximum/minimum values of array for scaling data (if value outside top/bottom - store "0")
-  ESP_LOGV("LOGARRAY", "margins");
+  //ESP_LOGV("LOGARRAY", "margins");
   int arrayIndex = 0;
   screenArray.Max = NAN;
   screenArray.Min = NAN;
@@ -46,7 +46,7 @@ void logArrayGetMargins(float logArrayInput[], float bottomVal, float topVal) { 
     }
   }
   if (isnan(screenArray.Max) || isnan(screenArray.Min)) {  // set min/max to bottom/top values if none good samples found
-    ESP_LOGV("screenArray.Max=", "NAN");
+    //ESP_LOGV("screenArray.Max=", "NAN");
     screenArray.Max = topVal;
     screenArray.Min = bottomVal;
   }

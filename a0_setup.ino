@@ -16,6 +16,17 @@ void setup() {  // put your setup code here, to run once:
 #ifdef SERIAL256000
   Serial.begin(256000);
 #endif
+  //inaSemaphore = xSemaphoreCreateBinary();                                         // Create the semaphore.
+  //xSemaphoreGive(inaSemaphore);                                                    // Give the semaphore initially, so the display task can take it.
+  //ESP_LOGD("semaphore", "give");
+  xTaskCreatePinnedToCore(display_task, "Display Task", 40000, NULL, 1, NULL, 0);  // Create the display task on core 1.
+                                                                                   //display_task: This is a pointer to the function that implements the task. The function must be implemented to never return (i.e., it should contain an infinite loop), or it should be terminated using the vTaskDelete function.
+                                                                                   //"Display Task": This is a descriptive name for the task. It’s mainly used to facilitate debugging.
+                                                                                   //10000: This is the size of the task stack specified as the number of bytes.
+                                                                                   //NULL: This is a pointer that will be used as the parameter for the task being created.
+                                                                                   //1: This is the priority at which the task should run. Tasks with higher numbers run before tasks with lower numbers.
+                                                                                   //NULL: This is used to pass back a handle by which the created task can be referenced.
+                                                                                   //1: This is the core ID. If the value is tskNO_AFFINITY, the created task is not pinned to any CPU, and the scheduler can run it on any core available. Values 0 or 1 indicate the index number of the CPU which the task should be pinned to.
   init_display();
   Wire.begin();  // for ina226 i2c bus
   init_ina();

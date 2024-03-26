@@ -132,14 +132,14 @@ u_int64_t getInaReadTime() {  // return estimated sampling time (uS) by multiply
 // https://microcontrollerslab.com/esp32-external-interrupts-tutorial-arduino-ide/
 void inaInrettuptInit() {  // setting pin mode and attaching ina ale interrupt
   pinMode(INA_ALE, INPUT);
-  ESP_LOGV("ALE-ISR", "detach");
+  //ESP_LOGV("ALE-ISR", "detach");
   inaAleAttachInterrupt();
 }
 
 void inaAleAttachInterrupt() {
   //ina226.readAndClearFlags(); // suppose there's sometimes ALE pin left HIGH, then interrupt stops working
   //flagInaReady = 0;
-  ESP_LOGV("ALE-ISR", "attach");
+  //ESP_LOGV("ALE-ISR", "attach");
   attachInterrupt(INA_ALE, inaAlertISR, FALLING);
   void enableConvReadyAlert();
   //attachInterrupt(INA_ALE, inaAlertISR, LOW);
@@ -159,18 +159,23 @@ void read_ina() {  // clear ale flag, read ina226, store in memory, rise new dat
   inaAleAttachInterrupt();  // reattach interrupt after readings are done (not sure if that's a right place to reattch interrupt)
 }
 
-void inaImportValues() {                        // put values read into corresponding variables
+void inaImportValues() {  // put values read into corresponding variables
+                          //if (xSemaphoreTake(inaSemaphore, 1000) == pdTRUE) {  // Take the semaphore before reading INA (portMAX_DELAY - maximum time wait)
+  //ESP_LOGD("semaphore", "take");
   inaVal.V = ina226.getBusVoltage_V();          // V
   inaVal.A = ina226.getCurrent_mA() / 1000.0f;  // µA = mA/1000
   inaVal.W = ina226.getBusPower() / 1000.0f;    // mW = W/1000 (?)
   inaVal.Vs = ina226.getShuntVoltage_mV();      // mV
-  ESP_LOGV("INA", "getting resistance...");     // debug in
-  if (inaVal.V != 0 && inaVal.A != 0) {                                          // open loop check. legacy:(inaVal.V > NO_CURRENT && inaVal.A > NO_CURRENT)
-    inaVal.R = inaVal.V / inaVal.A;                                              // calculate resistance R=V/I
-  } else inaVal.R = OPEN_LOOP;                                                   // setting "open loop" value
-  ESP_LOGV("R=V/I", "%f = %f / %f", inaVal.R, inaVal.V, inaVal.A);               // debug out
+  //ESP_LOGV("INA", "getting resistance...");     // debug in
+  if (inaVal.V != 0 && inaVal.A != 0) {  // open loop check. legacy:(inaVal.V > NO_CURRENT && inaVal.A > NO_CURRENT)
+    inaVal.R = inaVal.V / inaVal.A;      // calculate resistance R=V/I
+  } else inaVal.R = OPEN_LOOP;           // setting "open loop" value
+  //xSemaphoreGive(inaSemaphore);          // Give the semaphore after reading INA
+  //ESP_LOGD("semaphore", "give");
+  //ESP_LOGV("R=V/I", "%f = %f / %f", inaVal.R, inaVal.V, inaVal.A);               // debug out
   if (ina226.overflow) Serial.println("Overflow! Choose higher current range");  // overflow alert
-  ESP_LOGV("INA READ", "values: %fR %fA  %fV  %fW  %fVs", inaVal.R, inaVal.A, inaVal.V, inaVal.W, inaVal.Vs);
+                                                                                 //ESP_LOGV("INA READ", "values: %fR %fA  %fV  %fW  %fVs", inaVal.R, inaVal.A, inaVal.V, inaVal.W, inaVal.Vs);
+  //}
 }
 
 void inaContinuousMode() {  //

@@ -5,13 +5,13 @@ void switchInit() {
 void switchOn() {
   digitalWrite(OUT_PIN, HIGH);
   ledOn();
-  ESP_LOGV("SWITCH", "ON");
+  //ESP_LOGV("SWITCH", "ON");
 }
 
 void switchOff() {
   digitalWrite(OUT_PIN, LOW);
   ledOff();
-  ESP_LOGV("SWITCH", "OFF");
+  //ESP_LOGV("SWITCH", "OFF");
 }
 
 bool isSwitched() {

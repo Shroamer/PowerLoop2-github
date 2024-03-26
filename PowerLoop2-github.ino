@@ -9,9 +9,9 @@
 //==================== SPLASH SCREEN  ===================
 //#define BSP // uncomment for betterSerialTerminal output at 256000bps
 #define SPLASHSCREEN_TIMEOUT 500  // Splashscreen visible timeout. comment for no splashscreen
-#define REV_NO "2.0.4"
-#define REV_DATE "2024.03.25"
-#define SPLASH_MESSAGE "fix HI-R crash, hi-speed freeze; add NaN init"
+#define REV_NO "2.0.5"
+#define REV_DATE "2024.03.26"
+#define SPLASH_MESSAGE "utilizing both cores"
 
 //==================== ESP32 PIN DEFINITIONS ====================
 #define LED_PIN 2    // internal LED pin
@@ -43,7 +43,7 @@
 
 //==================== MULTIPLE CORE ====================
   // Declare a semaphore handle.
-  SemaphoreHandle_t sensorSemaphore;
+//SemaphoreHandle_t inaSemaphore;
 
 
 //==================== INA226 V/A meter ====================
@@ -58,9 +58,9 @@
 */
 INA226_WE ina226 = INA226_WE(&Wire, INA_ADDRESS);
 
-int inaConvTime = 7;                                              // store conversion time 0...7 (140/204/332/588/1100*/2116/4156/8244 µs)
+int inaConvTime = 5;                                              // store conversion time 0...7 (140/204/332/588/1100*/2116/4156/8244 µs)
 int ctValue[8] = { 140, 204, 332, 588, 1100, 2116, 4156, 8244 };  // storing these values for convenient use ctValue[inaConvTime]
-int inaAverageSamples = 0;                                        // store ina averaging 0...7 (1/4/16/64/128/256/512/1024 x)
+int inaAverageSamples = 1;                                        // store ina averaging 0...7 (1/4/16/64/128/256/512/1024 x)
 int avgValue[8] = { 1, 4, 16, 64, 128, 256, 512, 1024 };          // storing these values for convenient use avgValue[inaAverageSamples]
 
 #define OPEN_LOOP NAN //1000000.0f 

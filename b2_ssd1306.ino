@@ -5,7 +5,7 @@ void init_display() {
     for (;;)
       ;  // Don't proceed, loop forever
   }
-  ESP_LOGV("SSD1306", "display.began");
+  ESP_LOGD("SSD1306", "display.began");
 
   //display.display();
   //delay(1000);
