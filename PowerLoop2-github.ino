@@ -60,7 +60,7 @@ INA226_WE ina226 = INA226_WE(&Wire, INA_ADDRESS);
 
 int inaConvTime = 5;                                              // store conversion time 0...7 (140/204/332/588/1100*/2116/4156/8244 µs)
 int ctValue[8] = { 140, 204, 332, 588, 1100, 2116, 4156, 8244 };  // storing these values for convenient use ctValue[inaConvTime]
-int inaAverageSamples = 1;                                        // store ina averaging 0...7 (1/4/16/64/128/256/512/1024 x)
+int inaAverageSamples = 2;                                        // store ina averaging 0...7 (1/4/16/64/128/256/512/1024 x)
 int avgValue[8] = { 1, 4, 16, 64, 128, 256, 512, 1024 };          // storing these values for convenient use avgValue[inaAverageSamples]
 
 #define OPEN_LOOP NAN //1000000.0f 
@@ -76,7 +76,7 @@ struct inaDataStruct {  //standard power line data sample
   float Vs;             // Shunt voltage   (V)   ina226 register data
   float R;              // Load resistance (Ohm) R=V/I - calculated locally
 };
-inaDataStruct inaVal;  // here we'll keep all latest INA values
+volatile inaDataStruct inaVal;  // here we'll keep all latest INA values
 
 
 //==================== SSD1306 128x64 OLED SPI DISPLAY ====================
@@ -105,7 +105,7 @@ struct inaLog {
 //int logArray.index = 0;
 
 float trigR = 1.76f;   // resistance to trigger logging
-#define MIN_WINDOW_SIZE 0.00001f * 64.0f
+#define MIN_WINDOW_SIZE 0.0001f * 64.0f
 
 //==================== PLOTTER ====================
 #include "FastMap.h"  // used in plotter for fast map() of floats
